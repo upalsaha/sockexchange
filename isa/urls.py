@@ -18,5 +18,5 @@ from HelloWorldApp.home import homeTemplate
 
 urlpatterns = [
     #url(r'^admin/', include(admin.site.urls)),
-    url(r'', HelloWorldApp.home.homeTemplate),
+    url(r'HelloWorldApp/$', homeTemplate),
 ]
