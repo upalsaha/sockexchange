@@ -8,7 +8,7 @@ class Sock(models.Model):
 	style = models.CharField(max_length=30)
 	theme = models.CharField(max_length=30)
 	seller = models.EmailField()
-	price = models.DeceimalField()
+	price = models.DecimalField()
 
 class Review(models.Model):
 	username = models.CharField(max_length=30)
