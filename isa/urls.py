@@ -14,9 +14,13 @@ Including another URLconf
 """
 from django.conf.urls import include, url
 from django.contrib import admin
-from SockExchange.home import homeTemplate
+# from SockExchange.home import homeTemplate
+# from SockExchange.api import sock
 
 urlpatterns = [
     #url(r'^admin/', include(admin.site.urls)),
-    url(r'SockExchange/$', homeTemplate),
+    url(r'^SockExchange/', include('SockExchange.urls')),
+
+    #url(r'SockExchange/$', homeTemplate),
+
 ]
