@@ -1,0 +1,44 @@
+sockexchange
+
+Blake Goodwin
+Daniel Willson
+Upal Saha
+
+
+User Stories
+- As someone who wants a specific sock, if a sock is out of stock, I want to be able to sign up to be notified when the sock becomes available again.
+- As someone who cares about quality socks, I want to be able to read user reviews about each sock.
+- As a past customer, I want to be able to post a review about socks I’ve purchased.
+- As a customer, when I look at socks, I’d like to be able to sort the socks by price or review.
+- As a sock owner, I want to be able to post my sock(s) for sale.
+- As a customer, I want to be able to see recommended socks from sock experts.
+- As a customer, I want to be able to browse socks based off of different themes or styles.
+- As a sock owner with friends, I’d like to be able to share socks I like with friends.
+- As a customer, I want to be able to search for specific socks.
+- As a customer, I’d like to put socks in my cart so I can order them later.
+
+Models
+	Socks
+		Name
+		Material
+		Color
+		Description
+		Style
+		Theme
+		Seller
+		Quantity
+		Price
+		Many [Reviews]
+	Reviews
+		Username
+		Rating (1-5)
+		Review text
+		Review title
+		Date / time
+		One [Sock]
+	Orders
+		ID
+		Customer Name
+		Customer Email
+		Date/Time
+		Many [Socks]
