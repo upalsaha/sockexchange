@@ -1,0 +1,13 @@
+isamysql:
+   image: mysql:5.7.10
+   environment:
+    MYSQL_DATABASE: cs4501
+    MYSQL_USER: www
+    DATABASE_PASSWORD: S3cure
+    MYSQL_ROOT_PASSWORD: S3cure
+isaweb:
+   build: .
+   volumes:
+      - .:/sockexchange
+   links:
+     - isamysql:db
