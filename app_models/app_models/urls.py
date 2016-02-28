@@ -8,5 +8,4 @@ urlpatterns = [
     url(r'^material/(?P<material>[A-Za-z]+)/$', views.material, name='sock_by_material'),
     url(r'^color/(?P<color>[A-Za-z]+)/$', views.color, name='sock_by_color'),
     url(r'^theme/(?P<theme>[A-Za-z]+)/$', views.theme, name='sock_by_theme'),
-
 ]
