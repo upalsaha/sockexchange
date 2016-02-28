@@ -1,0 +1,54 @@
+body {
+	background: black;
+	font-family: GothamMedium, sans-serif;
+}
+
+p {
+	font-size: 18px;
+}
+
+.main {
+	width: 100%;
+	max-width: 1000px;
+	margin: 0 auto;
+	border-left: 1px solid #222;
+	border-right: 1px solid #222;
+	background: white;
+}
+
+.main-content {
+	padding: 18px 2.5%;
+	font-size: 0;
+}
+
+.header {
+	font-size: 18px;
+}
+
+.nav {
+	font-size: 18px;
+	margin-bottom: 36px;
+}
+
+.sock-item {
+	margin-right: 2.5%;
+	width: 30%;
+	display: inline-block;
+	height: 200px;
+	font-size: 18px;
+	margin-bottom: 36px;
+}
+
+.grid .sock-item:nth-child(3) {
+	margin-right: 0;
+}
+
+.sock-color {
+	width: 100%;
+	height: 150px;
+	background-color: #000;
+}
+
+
+
+
