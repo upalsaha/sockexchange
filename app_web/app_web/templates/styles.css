@@ -45,10 +45,29 @@ p {
 
 .sock-color {
 	width: 100%;
-	height: 150px;
+	height: 100px;
 	background-color: #000;
 }
 
+.detail .sock-color {
+	width: 200px;
+	float: left;
+	margin-right: 18px;
+	margin-bottom: 18px;
+}
 
+.sock-detail {
+	font-size: 18px;
+}
 
+.detail h2 {
+	text-decoration: underline;
+}
+
+@media screen and (max-width:768px) {
+	.detail .sock-color {
+		float: none;
+		width: 100%;
+	}
+}
 
