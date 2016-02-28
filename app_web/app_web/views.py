@@ -21,7 +21,7 @@ def home(request):
 
 def detail(request, sock_id):
 	#request from model the details for page
-	req = urllib.request.Request('http://localhost:8002/id/' + sock_id + '/')
+	req = urllib.request.Request('http://localhost:8002/detail/' + sock_id + '/')
 	resp_json = urllib.request.urlopen(req).read().decode('utf-8')
 	resp = json.loads(resp_json)
 	return HttpResponse(request, 'templates/')

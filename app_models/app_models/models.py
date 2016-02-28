@@ -11,7 +11,7 @@ class Sock(models.Model):
 	price = models.DecimalField(max_digits=3, decimal_places=2)
 
 	def as_json(self):
-		return dict(name=self.name, material=self.material, color=self.color, description = self.description, style = self.style, theme = self.theme, seller = self.seller, price = float(self.price))
+		return dict(id=self.id, name=self.name, material=self.material, color=self.color, description = self.description, style = self.style, theme = self.theme, seller = self.seller, price = float(self.price))
 
 
 class Order(models.Model):

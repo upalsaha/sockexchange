@@ -3,7 +3,7 @@
 <head>
 	<meta charset="UTF-8">
 	<link href="styles.css" rel="stylesheet" type="text/css">
-	<title>SockExchange: {{ Sock Title }}</title>
+	<title>SockExchange: {{name}}</title>
 </head>
 <body>
 	<div class="main">
@@ -15,17 +15,17 @@
 				<a href="index.html">Home</a>
 			</div>
 			<div class="detail">
-				<div style="background-color: COLOR;" class="sock-color"></div>
+				<div style="background-color: {{color}};" class="sock-color"></div>
 				<div class="sock-detail">
-					<h2>{{ Sock Name }}</h2>
-					<h4>${{ Price }} | {{ Quantity }} Remaining</h4>
-					<p class="description">{{ Sock Description }}</p>
+					<h2>{{name}}</h2>
+					<h4>${{price}}</h4>
+					<p class="description">{{description}}</p>
 					<p class="extra-info">
 						<ul>
-							<li>Material: {{ Material }}</li>
-							<li>Style: {{ Style }}</li>
-							<li>Theme: {{ Theme }}</li>
-							<li>Seller: {{ Seller }}</li>
+							<li>Material: {{material}}</li>
+							<li>Style: {{style}}</li>
+							<li>Theme: {{theme}}</li>
+							<li>Seller: {{seller}}</li>
 						</ul>
 					</p>
 				</div>
