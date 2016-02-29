@@ -1,0 +1,9 @@
+models:
+   image: tp33/django:1.2
+   external_links:
+      - mysql:db
+   ports:
+      - "8001:8000"
+   volumes:
+      - ~/Home/Documents/sockexchange/app_models:/app
+   command: "mod_wsgi-express start-server --reload-on-changes app_models/wsgi.py"
