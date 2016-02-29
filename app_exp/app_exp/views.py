@@ -5,6 +5,9 @@ import json
 import urllib.request
 import urllib.parse
 
+from . import views
+
+
 # make a GET request and parse the returned JSON                                                                                                                                                           # note, no timeouts, error handling or all the other things needed to do this for real                                                                                                                      
 # print ("About to do the GET...")
 # req = urllib.request.Request('http://jsonplaceholder.typicode.com/posts/1')
