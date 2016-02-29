@@ -5,8 +5,6 @@ import json
 import urllib.request
 import urllib.parse
 
-from . import views
-
 
 # make a GET request and parse the returned JSON                                                                                                                                                           # note, no timeouts, error handling or all the other things needed to do this for real                                                                                                                      
 # print ("About to do the GET...")
@@ -61,4 +59,4 @@ def detail(request, sock_id):
 	#request from model the details for page
 	req = urllib.request.Request('http://localhost:8001/id/' + sock_id + '/')
 	resp_json = urllib.request.urlopen(req).read().decode('utf-8')
-	return HttpResponse(json.dumps(resp_json, content_type="application/json")
+	return HttpResponse(json.dumps(resp_json), content_type="application/json")
