@@ -27,3 +27,4 @@ web:
    volumes:
       - /app_web:/app
    command: "mod_wsgi-express start-server --reload-on-changes app_web/wsgi.py"
+

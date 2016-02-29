@@ -6,3 +6,25 @@ models:
       - "8001:8000"
    volumes:
       - /app_models:/app
+   command: "mod_wsgi-express start-server --reload-on-changes app_models/wsgi.py"
+
+exp:
+   image: tp33/django:1.2
+   links:
+      - models:models-api
+   ports:
+      - "8002:8000"
+   volumes:
+      - /app_exp:/app
+   command: "mod_wsgi-express start-server --reload-on-changes app_exp/wsgi.py"
+
+web:
+   image: tp33/django:1.2
+   links:
+      - exp:exp-api
+   ports:
+      - "8000:8000"
+   volumes:
+      - /app_web:/app
+   command: "mod_wsgi-express start-server --reload-on-changes app_web/wsgi.py"
+
