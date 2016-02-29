@@ -14,10 +14,11 @@ import urllib.parse
 
 def home(request):
 	# make a GET request and parse the returned JSON                                                                                                                                                           # note, no timeouts, error handling or all the other things needed to do this for real                                                                                                                      
-	req = urllib.request.Request('http://localhost:8002/home/')
-	resp_json = urllib.request.urlopen(req).read().decode('utf-8')
-	resp = json.loads(resp_json)
-	return HttpResponse(request, 'templates/index.html', resp) 
+	# req = urllib.request.Request('http://localhost:8002/home/')
+	# resp_json = urllib.request.urlopen(req).read().decode('utf-8')
+	# resp = json.loads(resp_json)
+	# return HttpResponse(request, 'templates/index.html', resp) 
+	return HttpResponse(request, 'templates/index.html')
 
 def detail(request, sock_id):
 	#request from model the details for page
