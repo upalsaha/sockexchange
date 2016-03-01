@@ -1,5 +1,5 @@
 models:
-   image: tp33/django:1.2
+   build: .
    external_links:
       - mysql:db
    ports:
@@ -9,7 +9,7 @@ models:
    command: "mod_wsgi-express start-server --reload-on-changes app_models/wsgi.py"
 
 exp:
-   image: tp33/django:1.2
+   build: .
    links:
       - models:models-api
    ports:
@@ -19,7 +19,7 @@ exp:
    command: "mod_wsgi-express start-server --reload-on-changes app_exp/wsgi.py"
 
 web:
-   image: tp33/django:1.2
+   build: .
    links:
       - exp:exp-api
    ports:
