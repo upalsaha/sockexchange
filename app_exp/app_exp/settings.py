@@ -71,6 +71,8 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'app_exp.wsgi.application'
 
+MODELS_API = 'models-api'
+
 
 # Database
 # https://docs.djangoproject.com/en/1.8/ref/settings/#databases
