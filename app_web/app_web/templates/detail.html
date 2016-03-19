@@ -1,8 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
+{% load staticfiles %}
+<link href="{% static "styles.css" %}" rel="stylesheet" type="text/css">
 <head>
 	<meta charset="UTF-8">
-	<link href="styles.css" rel="stylesheet" type="text/css">
 	<title>SockExchange: {{name}}</title>
 </head>
 <body>
@@ -12,7 +13,7 @@
 				<h1>SockExchange</h1>
 			</div>
 			<div class="nav">
-				<a href="index.html">Home</a>
+				<a href="/home/">Home</a>
 			</div>
 			<div class="detail">
 				<div style="background-color: {{color}};" class="sock-color"></div>

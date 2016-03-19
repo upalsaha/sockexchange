@@ -73,7 +73,6 @@ WSGI_APPLICATION = 'app_web.wsgi.application'
 
 EXP_API = 'exp-api'
 
-
 # Database
 # https://docs.djangoproject.com/en/1.8/ref/settings/#databases
 
@@ -101,5 +100,13 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.8/howto/static-files/
-
+PROJECT_DIR  = os.path.dirname(__file__) 
+STATIC_ROOT = os.path.join(PROJECT_DIR,'static')
 STATIC_URL = '/static/'
+
+STATICFILES_DIRS = (
+    # Put strings here, like "/home/html/static" or "C:/www/django/static".
+    # Always use forward slashes, even on Windows.
+    # Don't forget to use absolute paths, not relative paths.
+    os.path.join(PROJECT_DIR, 'staticfiles'),
+)
