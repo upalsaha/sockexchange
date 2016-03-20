@@ -1,7 +1,12 @@
 from django.shortcuts import get_object_or_404, get_list_or_404, render
 from .models import Sock
 from .models import User
-import json 
+from .models import Authenticator
+from . import settings
+from django.contrib.auth import hashers
+import json
+import hmac
+import os
 
 # Create your views here.
 from django.http import HttpResponse
@@ -39,8 +44,27 @@ def theme(request, theme):
 
 def sign_up(request):
 	if request.method == 'GET':
-		return render('home')
+		return HttpResponse('BAD')
+	hashed_password = hashers.make_password(request.POST['password'])
 	if request.method == 'POST':
-		new_user = User.objects.create(username=request.POST.get("username"), password=request.POST.get("password"))
+		new_user = User.objects.create(username=request.POST.get("username"), password=hashed_password)
 		new_user.save()
 	return HttpResponse("OK")
+
+def login(request):
+	if request.method == 'GET':
+		try_username = request.GET.get('username')
+		try_password = request.GET.get('password')
+		try:
+			u = User.objects.get(username=try_username)
+		except User.DoesNotExist:
+			return HttpResponse("BAD: USER DNE")
+		if hashers.check_password(try_password, u.password):
+			auth = hmac.new (key = settings.SECRET_KEY.encode('utf-8'), msg = os.urandom(32), digestmod = 'sha256').hexdigest()
+			logged_in = Authenticator.objects.create(user_id=u, auth=auth)
+			logged_in.save()
+			return HttpResponse(auth)
+		else:
+			return HttpResponse("BAD: PASSWORD")
+	else:
+		return HttpResponse("BAD: POST REQ")

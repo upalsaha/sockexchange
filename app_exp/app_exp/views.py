@@ -26,7 +26,7 @@ def detail(request, sock_id):
 def sign_up(request):
 	response = "invalid"
 	if request.method == 'GET':
-		return render('home')
+		return render('/home/')
 	if request.method == 'POST':
 		username = request.POST.get('username')
 		password = request.POST.get('password')
@@ -39,3 +39,17 @@ def sign_up(request):
 		result = urllib.request.urlopen(req, bin_data)
 
 	return HttpResponse(result)
+
+def login(request):
+	response = "invalid"
+	if request.method == 'GET':
+		return render('/login/')
+	if request.method == 'POST':
+		username = request.POST.get('username')
+		password = request.POST.get('password')
+		url = 'http://' + settings.MODELS_API + ':8000/login' + '?' + 'username=' + username + '&' + 'password=' + password
+
+		req = urllib.request.Request(url)
+		response = urllib.request.urlopen(req).read().decode('utf-8')
+
+	return HttpResponse(response)

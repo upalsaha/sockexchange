@@ -27,6 +27,6 @@ class Order(models.Model):
 	socks = models.ManyToManyField(Sock)
 
 class Authenticator(models.Model):
-	user_id = models.OneToOneField(User)
+	user_id = models.ForeignKey(User)
 	auth = models.CharField(max_length=256)
 	auth_time = models.DateTimeField(auto_now_add=True)
