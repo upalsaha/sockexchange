@@ -5,6 +5,8 @@ from django.core.urlresolvers import reverse
 from . import settings
 from .forms import SignUpForm
 from .forms import LoginForm
+from .forms import CreateForm
+from django.contrib import messages
 
 import json 
 import urllib.request
@@ -38,11 +40,11 @@ def sign_up(request):
 			username = form.cleaned_data['username']
 			password = form.cleaned_data['password']
 			post_data = {'username':username, 'password': password}
-			#result = urllib2.Request(url, urllib.urlencode(post_data))
 			enc_data = urllib.parse.urlencode(post_data)
 			bin_data = enc_data.encode('ascii')
 			req = urllib.request.Request(url)
 			result = urllib.request.urlopen(req, bin_data)
+			messages.success(request, "Sign up successful")
 
 			return HttpResponseRedirect('/home/')
 	# if a GET (or any other method) we'll create a blank form
@@ -54,6 +56,9 @@ def sign_up(request):
 def login(request):
 
 	response = 'invalid'
+	if request.COOKIES.get('auth'):
+		messages.error(request, "Already logged in")
+		return HttpResponseRedirect('/home/')
 	if request.method == 'GET':
 		next_url = request.GET.get('next') or reverse('home')
 		dict = {}
@@ -76,7 +81,7 @@ def login(request):
 			enc_data = urllib.parse.urlencode(post_data)
 			bin_data = enc_data.encode('ascii')
 			req = urllib.request.Request(url)
-			result = urllib.request.urlopen(req, bin_data)
+			result = urllib.request.urlopen(req, bin_data).read().decode('utf-8')
 			if not result:
 				dict = {}
 				dict['next'] = next_url
@@ -85,15 +90,15 @@ def login(request):
 				dict = {}
 				dict['next'] = next_url
 				return render(request, 'login.html', dict)
-			# result[authenticator]
-			authenticator = request
-			if authenticator == "BAD":
+
+			authenticator = json.loads(result)
+			if authenticator['auth'] == "BAD":
 				dict = {}
 				dict['next'] = next_url
 				return render(request, 'login.html', dict)
 			else:
 				response = HttpResponseRedirect(next_url)
-				response.set_cookie("auth", authenticator)
+				response.set_cookie("auth", authenticator['auth'])
 				return response
 
 	# if a GET (or any other method) we'll create a blank form
@@ -101,3 +106,56 @@ def login(request):
 		form = LoginForm()
 		
 	return render(request, 'login.html', {'form': form})
+
+def logout(request):
+	auth = request.COOKIES.get('auth')
+	if not auth:
+		messages.error(request, "Not logged in")
+		return HttpResponseRedirect('/home/')
+	url = 'http://' + settings.EXP_API + ':8000/logout/'
+	post_data = {'auth': auth}
+	enc_data = urllib.parse.urlencode(post_data)
+	bin_data = enc_data.encode('ascii')
+	req = urllib.request.Request(url)
+	result = urllib.request.urlopen(req, bin_data).read().decode('utf-8')
+	if result == 'OK':
+		messages.success(request, "Successfully logged out")
+	else:
+		messages.error(request, "ERROR: Unable to log out")
+	response = HttpResponseRedirect('/home/')
+	response.delete_cookie('auth')
+	return response
+
+def create(request):
+	auth = request.COOKIES.get('auth')
+	if not auth:
+		messages.error(request, "Not logged in")
+		return HttpResponseRedirect('/home/')
+	if request.method == 'POST':
+		# create a form instance and populate it from the request
+		form = CreateForm(request.POST)
+		# check whether it's valid
+		if form.is_valid():
+			url = 'http://' + settings.EXP_API + ':8000/create/'
+
+			name = form.cleaned_data['name']
+			material = form.cleaned_data['material']
+			color = form.cleaned_data['color']
+			description = form.cleaned_data['description']
+			style = form.cleaned_data['style']
+			theme = form.cleaned_data['theme']
+			price = form.cleaned_data['price']
+
+			post_data = {'name': name, 'material': material, 'color': color, 'description': description, 'style': style, 'theme': theme, 'price': price, 'auth': auth}
+			enc_data = urllib.parse.urlencode(post_data)
+			bin_data = enc_data.encode('ascii')
+			req = urllib.request.Request(url)
+			result = urllib.request.urlopen(req, bin_data)
+			messages.success(request, "Listing created successfully")
+
+			return HttpResponseRedirect('/home/')
+	# if a GET (or any other method) we'll create a blank form
+	else:
+		form = CreateForm()
+		
+	return render(request, 'createlisting.html', {'form': form})

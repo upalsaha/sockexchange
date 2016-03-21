@@ -58,13 +58,53 @@ def login(request):
 		try:
 			u = User.objects.get(username=try_username)
 		except User.DoesNotExist:
-			return HttpResponse("BAD: USER DNE")
+			return HttpResponse("BAD")
 		if hashers.check_password(try_password, u.password):
-			auth = hmac.new (key = settings.SECRET_KEY.encode('utf-8'), msg = os.urandom(32), digestmod = 'sha256').hexdigest()
+			auth = hmac.new(key = settings.SECRET_KEY.encode('utf-8'), msg = os.urandom(32), digestmod = 'sha256').hexdigest()
 			logged_in = Authenticator.objects.create(user_id=u, auth=auth)
 			logged_in.save()
-			return HttpResponse(auth)
+			dict = {}
+			dict['auth'] = auth
+			return HttpResponse(json.dumps(dict), content_type="application/json")
 		else:
-			return HttpResponse("BAD: PASSWORD")
+			return HttpResponse("BAD")
 	else:
-		return HttpResponse("BAD: POST REQ")
+		return HttpResponse("BAD")
+
+def logout(request):
+	auth = request.GET.get('auth')
+	if request.method == 'GET':
+		Authenticator.objects.filter(auth=auth).delete()
+		return HttpResponse('OK')
+	else:
+		return HttpResponse('BAD')
+
+def create(request):
+	if request.method == 'GET':
+		return HttpResponse('BAD')
+	if request.method == 'POST':
+		name = request.POST.get('name')
+		material = request.POST.get('material')
+		color = request.POST.get('color')
+		description = request.POST.get('description')
+		style = request.POST.get('style')
+		theme = request.POST.get('theme')
+		price = request.POST.get('price')
+
+		auth_val = request.POST.get('auth')
+		linked_auth = Authenticator.objects.get(auth=auth_val)
+		seller = linked_auth.user_id
+
+		new_sock = Sock.objects.create(name=name, material=material, color=color, description=description, style=style, theme=theme, price=price, seller=seller)
+		new_sock.save()
+
+	return HttpResponse('OK')
+
+def verify(request):
+	if request.method == 'GET':
+		auth = request.GET.get('auth')
+		try:
+			u = Authenticator.objects.get(auth=auth)
+		except Authenticator.DoesNotExist:
+			return HttpResponse("BAD")
+	return HttpResponse('OK')

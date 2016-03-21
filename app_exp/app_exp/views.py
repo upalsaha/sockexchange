@@ -42,8 +42,8 @@ def sign_up(request):
 
 def login(request):
 	response = "invalid"
-	if request.method == 'GET':
-		return render('/login/')
+	# if request.method == 'GET':
+	# 	return render('/login/')
 	if request.method == 'POST':
 		username = request.POST.get('username')
 		password = request.POST.get('password')
@@ -52,4 +52,42 @@ def login(request):
 		req = urllib.request.Request(url)
 		response = urllib.request.urlopen(req).read().decode('utf-8')
 
+	return HttpResponse(response, content_type="application/json")
+
+def logout(request):
+	if request.method == 'POST':
+		auth = request.POST.get('auth')
+		url = 'http://' + settings.MODELS_API + ':8000/logout' + '?' + 'auth=' + auth
+		req = urllib.request.Request(url)
+		response = urllib.request.urlopen(req).read().decode('utf-8')
 	return HttpResponse(response)
+
+def create(request):
+	response = "invalid"
+	if request.method == 'GET':
+		return render('/home/')
+	if request.method == 'POST':
+		auth = request.POST.get('auth')
+		if not auth:
+			return HttpResponse('BAD')
+		else:
+			url = 'http://' + settings.MODELS_API + ':8000/verify' + '?auth=' + auth
+			req = urllib.request.Request(url)
+			response = urllib.request.urlopen(req).read().decode('utf-8')
+			if response == 'OK':
+				url2 = 'http://' + settings.MODELS_API + ':8000/create/'
+				name = request.POST.get('name')
+				material = request.POST.get('material')
+				color = request.POST.get('color')
+				description = request.POST.get('description')
+				style = request.POST.get('style')
+				theme = request.POST.get('theme')
+				price = request.POST.get('price')
+
+				post_data = {'name': name, 'material': material, 'color': color, 'description': description, 'style': style, 'theme': theme, 'price': price, 'auth': auth}
+				enc_data = urllib.parse.urlencode(post_data)
+				bin_data = enc_data.encode('ascii')
+				req2 = urllib.request.Request(url2)
+				result = urllib.request.urlopen(req2, bin_data).read().decode('utf-8')
+
+				return HttpResponse(result)

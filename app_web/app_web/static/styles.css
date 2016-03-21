@@ -30,6 +30,12 @@ p {
 	margin-bottom: 36px;
 }
 
+#messages {
+	font-size: 18px;
+	color: white;
+	background: black;
+}
+
 .sock-item {
 	margin-right: 2.5%;
 	width: 30%;
