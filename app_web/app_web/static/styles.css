@@ -1,6 +1,11 @@
+@font-face {
+    font-family: Gotham;
+    src: url(GothamMedium.otf);
+}
+
 body {
 	background: black;
-	font-family: GothamMedium, sans-serif;
+	font-family: Gotham, sans-serif;
 }
 
 p {
@@ -25,9 +30,25 @@ p {
 	font-size: 18px;
 }
 
-.nav {
+.grid {
+	padding-top: 36px;
+}
+
+.nav, .form {
 	font-size: 18px;
 	margin-bottom: 36px;
+}
+
+.nav a {
+	text-decoration: none;
+	color: #6900A7;
+	font-weight: bold;
+	text-transform: uppercase;
+	margin-right: 20px;
+}
+
+.nav a:hover {
+	text-decoration: underline;
 }
 
 #messages {
@@ -53,6 +74,7 @@ p {
 	width: 100%;
 	height: 100px;
 	background-color: #000;
+	border: 1px solid #aaa;
 }
 
 .detail .sock-color {
@@ -64,6 +86,11 @@ p {
 
 .sock-detail {
 	font-size: 18px;
+}
+
+.sock-item h3 {
+	text-decoration: none;
+	text-align: center;
 }
 
 .detail h2 {

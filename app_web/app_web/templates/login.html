@@ -1,5 +1,43 @@
-<form action="/login/" method="post">
-    {{ form }}
-    <input type="submit" value="Submit" />
-    <input type="hidden" value="{{next_url}}" />
-</form>
+<!DOCTYPE html>
+<html lang="en">
+{% load staticfiles %}
+<link href="{% static "styles.css" %}" rel="stylesheet" type="text/css">
+<head>
+	<meta charset="UTF-8">
+	<title>SockExchange Login</title>
+</head>
+<body>
+	<div class="main">
+		<div class="main-content">
+			<div class="header">
+				<h1>SockExchange</h1>
+			</div>
+			<div class="nav">
+				<a href="/home/">Home</a>
+				{% if not request.COOKIES.auth %}
+				<a href="/login/">Login</a>
+				<a href="/signup/">Sign Up</a>
+				{% else %}
+				<a href="/create/">Create a Listing</a>
+				<a href="/logout/">Logout</a>
+				{% endif %}
+			</div>
+			{% if messages %}
+			<div id="messages">
+				{% for message in messages %}
+				<h2>{{ message }}</h2>
+				{% endfor %}
+			</div>
+			{% endif %}
+			<div class="form">
+				<h2>Login</h2>
+				<form action="/login/" method="post">
+				    {{ form.as_p }}
+				    <input type="submit" value="Submit" />
+				    <input type="hidden" value="{{next_url}}" />
+				</form>
+			</div>
+		</div>
+	</div>
+</body>
+
