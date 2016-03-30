@@ -13,6 +13,7 @@ from django.http import HttpResponse
 
 def home(request):
     home_socks = Sock.objects.order_by('?')
+    #home_socks = Sock.objects.order_by()
     dict = {}
 
     for x in range(1, 7):
