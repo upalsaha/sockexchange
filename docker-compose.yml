@@ -1,3 +1,17 @@
+kafka:
+   image: spotify/kafka
+   container_name: kafka
+   environment:
+      ADVERTISED_HOST: kafka
+      ADVERTISED_PORT: 9092
+   hostname: kafka
+
+es:
+   image: elasticsearch:2.0
+   container_name: es
+   ports:
+      - "9200:9200"
+
 models:
    build: .
    external_links:
@@ -12,6 +26,8 @@ exp:
    build: .
    links:
       - models:models-api
+      - kafka:kafka
+      - es:es
    ports:
       - "8002:8000"
    volumes:
@@ -28,16 +44,13 @@ web:
       - ./app_web:/app
    command: "mod_wsgi-express start-server --reload-on-changes app_web/wsgi.py"
 
-kafka:
-   image: spotify/kafka
-   container_name: kafka
-   environment:
-      ADVERTISED_HOST: kafka
-      ADVERTISED_PORT: 9092
-   hostname: kafka
-
-es:
-   image: elasticsearch:2.0
-   container_name: es
+batch:
+   build: .
+   links:
+      - kafka:kafka
+      - es:es
    ports:
-      - "9200:9200"
+      - "8003:8000"
+   volumes:
+      - ./app_batch:/app
+   command: "python batch.py"
