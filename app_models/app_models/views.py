@@ -99,7 +99,7 @@ def create(request):
 		new_sock = Sock.objects.create(name=name, material=material, color=color, description=description, style=style, theme=theme, price=price, seller=seller)
 		new_sock.save()
 
-	return HttpResponse('OK')
+	return HttpResponse(new_sock.pk)
 
 def verify(request):
 	if request.method == 'GET':

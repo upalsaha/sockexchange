@@ -1,5 +1,6 @@
 from django.shortcuts import get_object_or_404, get_list_or_404, render
 from django.http import HttpResponse
+from kafka import KafkaProducer
 from . import settings
 
 import json
@@ -89,5 +90,10 @@ def create(request):
 				bin_data = enc_data.encode('ascii')
 				req2 = urllib.request.Request(url2)
 				result = urllib.request.urlopen(req2, bin_data).read().decode('utf-8')
+
+				# TODO: Add validation for listing
+				producer = KafkaProducer(bootstrap_servers='kafka:9092')
+				post_data['id'] = result
+				producer.send('new-listings-topic', json.dumps(post_data).encode('utf-8'))
 
 				return HttpResponse(result)
