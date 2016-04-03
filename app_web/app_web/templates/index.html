@@ -14,6 +14,10 @@
 			</div>
 			<div class="nav">
 				<a href="/home/">Home</a>
+				<form method="POST" action="/search/">
+					<input type='text' name='query' value='search'></input>
+					<input type='submit' value='submit'></input>
+				</form>
 				{% if not request.COOKIES.auth %}
 				<a href="/login/">Login</a>
 				<a href="/signup/">Sign Up</a>

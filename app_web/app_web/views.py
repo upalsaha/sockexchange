@@ -159,3 +159,14 @@ def create(request):
 		form = CreateForm()
 		
 	return render(request, 'createlisting.html', {'form': form})
+
+def search(request):
+	if request.method == 'POST':
+		query = request.POST.get('query')
+		url = 'http://' + settings.EXP_API + ':8000/search?query=' + query
+		req = urllib.request.Request(url)
+		response = urllib.request.urlopen(req).read().decode('utf-8')
+		search_results = json.loads(response)
+
+		return render(request, 'searchresults.html', { 'dict': search_results})
+

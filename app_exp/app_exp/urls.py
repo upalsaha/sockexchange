@@ -14,6 +14,7 @@ urlpatterns = [
     url(r'^logout/', views.logout, name='logout'),
     url(r'^create/', views.create, name='create'),
     url(r'^signup/', views.sign_up, name='signup'),
+    url(r'^search/', views.search, name='search'),
     url(r'^detail/(?P<sock_id>[0-9]+)/$', views.detail, name='detail_sock_by_id'),
 
 

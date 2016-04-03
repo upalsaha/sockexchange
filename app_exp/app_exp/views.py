@@ -1,6 +1,7 @@
 from django.shortcuts import get_object_or_404, get_list_or_404, render
 from django.http import HttpResponse
 from kafka import KafkaProducer
+from elasticsearch import Elasticsearch
 from . import settings
 
 import json
@@ -97,3 +98,20 @@ def create(request):
 				producer.send('new-listings-topic', json.dumps(post_data).encode('utf-8'))
 
 				return HttpResponse(result)
+
+def search(request):
+	query = request.GET.get('query')
+	es = Elasticsearch(['es'])
+	raw_results = es.search(index='listing_index', body={'query': {'query_string': {'query': query}}, 'size': 10})
+	num_results = raw_results['hits']['total']
+	sock_results = raw_results['hits']['hits']
+	dict = []
+	#count = 0
+	for sock in sock_results:
+		id = sock['_source']['id'] 
+		name = sock['_source']['name']
+		color = sock['_source']['color']
+		dict.append({'id': id, 'name': name, 'color': color})
+		#count += 1
+
+	return HttpResponse(json.dumps(dict), content_type="application/json")
