@@ -11,6 +11,12 @@ import os
 # Create your views here.
 from django.http import HttpResponse
 
+def response(code, message):
+	dict = {}
+	dict['result'] = code
+	dict['message'] = message
+	return json.dumps(dict)
+
 def home(request):
     home_socks = Sock.objects.order_by('?')[:6]
     #home_socks = Sock.objects.order_by()
@@ -46,18 +52,12 @@ def theme(request, theme):
 
 def sign_up(request):
 	if request.method == 'GET':
-		dict = {}
-		dict['result'] = 1
-		dict['message'] = "Error: Get request made to sign_up on models level"
-		return HttpResponse(json.dumps(dict), content_type="application/json")
+		return HttpResponse(response(1, "Error: Get request made to sign_up on models level"), content_type="application/json")
 	hashed_password = hashers.make_password(request.POST['password'])
 	if request.method == 'POST':
 		new_user = User.objects.create(username=request.POST.get("username"), password=hashed_password)
 		new_user.save()
-	dict = {}
-	dict['result'] = 0
-	dict['message'] = "New user created"
-	return HttpResponse(json.dumps(dict), content_type='application/json')
+	return HttpResponse(response(0, "New user created"), content_type='application/json')
 
 
 def login(request):
@@ -67,18 +67,21 @@ def login(request):
 		try:
 			u = User.objects.get(username=try_username)
 		except User.DoesNotExist:
-			return HttpResponse("BAD")
+			return HttpResponse(response(1, "User Does Not Exist"), content_type="application/json")
 		if hashers.check_password(try_password, u.password):
 			auth = hmac.new(key = settings.SECRET_KEY.encode('utf-8'), msg = os.urandom(32), digestmod = 'sha256').hexdigest()
 			logged_in = Authenticator.objects.create(user_id=u, auth=auth)
 			logged_in.save()
 			dict = {}
 			dict['auth'] = auth
+			dict['result'] = 0;
+			dict['message'] = "Valid Log-in"
 			return HttpResponse(json.dumps(dict), content_type="application/json")
 		else:
-			return HttpResponse("BAD")
+			return HttpResponse(response(1, "Wrong Password"), content_type="application/json")
 	else:
-		return HttpResponse("BAD")
+		return HttpResponse(response(1, "Get Request Made "), content_type="application/json")
+
 
 def logout(request):
 	auth = request.GET.get('auth')

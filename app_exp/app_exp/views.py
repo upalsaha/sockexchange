@@ -9,6 +9,12 @@ import requests
 import urllib.request
 import urllib.parse
 
+def response(code, message):
+	dict = {}
+	dict['result'] = code
+	dict['message'] = message
+	return json.dumps(dict)
+
 def home(request):
 
 	url = 'http://' + settings.MODELS_API + ':8000/home/'
@@ -27,10 +33,7 @@ def detail(request, sock_id):
 
 def sign_up(request):
 	if request.method == 'GET':
-		dict = {}
-		dict['result'] = 1
-		dict ['message'] = 'Error: GET request made to sign_up on exp level'
-		return HttpResponse(json.dumps(dict), content_type='application/json')
+		return HttpResponse(response(1, 'Error: GET request made to sign_up on exp level'), content_type='application/json')
 	if request.method == 'POST':
 		username = request.POST.get('username')
 		password = request.POST.get('password')

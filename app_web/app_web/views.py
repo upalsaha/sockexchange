@@ -12,6 +12,12 @@ import json
 import urllib.request
 import urllib.parse
 
+def response(code, message):
+	dict = {}
+	dict['result'] = code
+	dict['message'] = message
+	return json.dumps(dict)
+
 def home(request):
 	# make a GET request and parse the returned JSON
 	url = 'http://' + settings.EXP_API + ':8000/home/'
@@ -83,25 +89,16 @@ def login(request):
 			bin_data = enc_data.encode('ascii')
 			req = urllib.request.Request(url)
 			result = urllib.request.urlopen(req, bin_data).read().decode('utf-8')
-			if not result:
-				dict = {}
-				dict['next'] = next_url
-				return render(request, 'login.html', dict)
-			if result == 'BAD':
-				dict = {}
-				dict['next'] = next_url
-				return render(request, 'login.html', dict)
-
-			authenticator = json.loads(result)
-			if authenticator['auth'] == "BAD":
-				dict = {}
-				dict['next'] = next_url
-				return render(request, 'login.html', dict)
-			else:
+			result_dict = json.loads(result)
+			if result_dict['result'] == 1:
+				form = LoginForm()
+				messages.success(request, result_dict['message'])
+				return render(request, 'login.html', {'form': form})
+			if result_dict['result'] == 0:
+				messages.success(request, result_dict['message'])
 				response = HttpResponseRedirect(next_url)
-				response.set_cookie("auth", authenticator['auth'])
+				response.set_cookie("auth", result_dict['auth'])
 				return response
-
 	# if a GET (or any other method) we'll create a blank form
 	else:
 		form = LoginForm()
