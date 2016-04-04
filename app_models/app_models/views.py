@@ -87,9 +87,9 @@ def logout(request):
 	auth = request.GET.get('auth')
 	if request.method == 'GET':
 		Authenticator.objects.filter(auth=auth).delete()
-		return HttpResponse('OK')
+		return HttpResponse(response(0, "Logged Out"), content_type='application/json')
 	else:
-		return HttpResponse('BAD')
+		return HttpResponse(response(1, "Invalid Request"), content_type='application/json')
 
 def create(request):
 	if request.method == 'GET':

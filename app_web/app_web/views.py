@@ -90,6 +90,8 @@ def login(request):
 			req = urllib.request.Request(url)
 			result = urllib.request.urlopen(req, bin_data).read().decode('utf-8')
 			result_dict = json.loads(result)
+			
+
 			if result_dict['result'] == 1:
 				form = LoginForm()
 				messages.success(request, result_dict['message'])
@@ -116,12 +118,11 @@ def logout(request):
 	bin_data = enc_data.encode('ascii')
 	req = urllib.request.Request(url)
 	result = urllib.request.urlopen(req, bin_data).read().decode('utf-8')
-	if result == 'OK':
-		messages.success(request, "Successfully logged out")
-	else:
-		messages.error(request, "ERROR: Unable to log out")
+	result_dict = json.loads(result)
+	messages.success(request, result_dict['message'])
 	response = HttpResponseRedirect('/home/')
-	response.delete_cookie('auth')
+	if result_dict['result'] == 0:
+		response.delete_cookie('auth')
 	return response
 
 def create(request):

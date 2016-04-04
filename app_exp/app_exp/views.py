@@ -65,7 +65,9 @@ def logout(request):
 		url = 'http://' + settings.MODELS_API + ':8000/logout' + '?' + 'auth=' + auth
 		req = urllib.request.Request(url)
 		response = urllib.request.urlopen(req).read().decode('utf-8')
-	return HttpResponse(response)
+		return HttpResponse(response, content_type='application/json')
+	else:
+		HttpResponse(response(1, "Invalid Request"), content_type='application/json')
 
 def create(request):
 	response = "invalid"
