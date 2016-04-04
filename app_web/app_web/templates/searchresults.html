@@ -21,15 +21,14 @@
 				<a href="/create/">Create a Listing</a>
 				<a href="/logout/">Logout</a>
 				{% endif %}
+				<form class="search" method="POST" action="/search/">
+					<input type='text' name='query' value='search'></input>
+					<input type='submit' value='Search'></input>
+				</form>
 			</div>
-			{% if messages %}
-			<div id="messages">
-				{% for message in messages %}
-				<h2>{{ message }}</h2>
-				{% endfor %}
-			</div>
-			{% endif %}
+			
 			<div class="grid">
+				<h2>Search Results</h2>
 				<ul>
 					<!-- For each sock -->
 					{% if dict.none %}
@@ -49,6 +48,13 @@
 					<!-- End For Each -->
 				</ul>
 			</div>
+			{% if messages %}
+			<div id="messages">
+				{% for message in messages %}
+				<h2>{{ message }}</h2>
+				{% endfor %}
+			</div>
+			{% endif %}
 		</div>
 	</div>
 </body>

@@ -4,7 +4,7 @@
 }
 
 body {
-	background: black;
+	background: #21015A;
 	font-family: Gotham, sans-serif;
 }
 
@@ -26,7 +26,7 @@ p {
 	font-size: 0;
 }
 
-.header {
+.header, .grid h2 {
 	font-size: 18px;
 }
 
@@ -58,7 +58,21 @@ p {
 #messages {
 	font-size: 18px;
 	color: white;
-	background: black;
+	background: #5F7EFF;
+	padding: 1% 18px;
+}
+
+input {
+	font-family: Gotham, sans-serif;
+}
+
+input[type="submit"]  {
+	background: #6900A7;
+	color: white;
+	font-family: Gotham, sans-serif;
+	text-transform: uppercase;
+	border: 1px #6900A7;
+	padding: 3px;
 }
 
 .sock-item {
