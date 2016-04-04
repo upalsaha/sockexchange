@@ -43,8 +43,9 @@ def sign_up(request):
 			enc_data = urllib.parse.urlencode(post_data)
 			bin_data = enc_data.encode('ascii')
 			req = urllib.request.Request(url)
-			result = urllib.request.urlopen(req, bin_data)
-			messages.success(request, "Sign up successful")
+			result = urllib.request.urlopen(req, bin_data).read().decode('utf-8')
+			result_dict = json.loads(result);
+			messages.success(request, result_dict['message'])
 
 			return HttpResponseRedirect('/home/')
 	# if a GET (or any other method) we'll create a blank form

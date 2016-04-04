@@ -26,21 +26,21 @@ def detail(request, sock_id):
 	return HttpResponse(resp_json, content_type="application/json")
 
 def sign_up(request):
-	response = "invalid"
 	if request.method == 'GET':
-		return render('/home/')
+		dict = {}
+		dict['result'] = 1
+		dict ['message'] = 'Error: GET request made to sign_up on exp level'
+		return HttpResponse(json.dumps(dict), content_type='application/json')
 	if request.method == 'POST':
 		username = request.POST.get('username')
 		password = request.POST.get('password')
 		url = 'http://' + settings.MODELS_API + ':8000/signup/'
-
 		post_data = {'username':username, 'password': password}
 		enc_data = urllib.parse.urlencode(post_data)
 		bin_data = enc_data.encode('ascii')
 		req = urllib.request.Request(url)
-		result = urllib.request.urlopen(req, bin_data)
-
-	return HttpResponse(result)
+		result = urllib.request.urlopen(req, bin_data).read().decode('utf-8')
+	return HttpResponse(result, content_type="application/json")
 
 def login(request):
 	response = "invalid"
@@ -67,6 +67,7 @@ def logout(request):
 def create(request):
 	response = "invalid"
 	if request.method == 'GET':
+		#message error
 		return render('/home/')
 	if request.method == 'POST':
 		auth = request.POST.get('auth')
@@ -113,5 +114,6 @@ def search(request):
 		color = sock['_source']['color']
 		dict.append({'id': id, 'name': name, 'color': color})
 		#count += 1
-
 	return HttpResponse(json.dumps(dict), content_type="application/json")
+
+

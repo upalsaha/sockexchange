@@ -17,7 +17,7 @@ class Sock(models.Model):
 	seller = models.ForeignKey(User)
 	price = models.DecimalField(max_digits=3, decimal_places=2)
 
-	def as_json(self):
+	def as_dict(self):
 		return dict(id=self.id, name=self.name, material=self.material, color=self.color, description = self.description, style = self.style, theme = self.theme, seller = str(self.seller), price = float(self.price))
 
 class Order(models.Model):
