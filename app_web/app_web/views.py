@@ -6,6 +6,7 @@ from . import settings
 from .forms import SignUpForm
 from .forms import LoginForm
 from .forms import CreateForm
+import types
 from django.contrib import messages
 
 import json 
@@ -168,5 +169,8 @@ def search(request):
 		response = urllib.request.urlopen(req).read().decode('utf-8')
 		search_results = json.loads(response)
 
-		return render(request, 'searchresults.html', { 'dict': search_results})
+		if not isinstance(search_results, list):
+			messages.success(request, "No search results")
+			return render(request, 'searchresults.html')
+		return render(request, 'searchresults.html', {'dict': search_results})
 

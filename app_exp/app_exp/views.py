@@ -111,11 +111,15 @@ def create(request):
 def search(request):
 	query = request.GET.get('query')
 	es = Elasticsearch(['es'])
+	
 	raw_results = es.search(index='listing_index', body={'query': {'query_string': {'query': query}}, 'size': 10})
 	num_results = raw_results['hits']['total']
 	sock_results = raw_results['hits']['hits']
 	dict = []
 	#count = 0
+	if num_results == 0:
+		return HttpResponse(response(1, "No Results"), content_type='application/json')
+ 
 	for sock in sock_results:
 		id = sock['_source']['id'] 
 		name = sock['_source']['name']

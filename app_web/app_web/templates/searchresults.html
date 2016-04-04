@@ -32,7 +32,9 @@
 			<div class="grid">
 				<ul>
 					<!-- For each sock -->
-					
+					{% if dict.none %}
+						{{dict.none}}
+					{% else %}
 					{% for sock in dict %}
 					<li class="sock-item">
 						<a href="/detail/{{sock.id}}/">
@@ -43,6 +45,7 @@
 						</a>
 					</li>
 					{% endfor %}
+				{% endif %}
 					<!-- End For Each -->
 				</ul>
 			</div>
