@@ -93,7 +93,7 @@ def logout(request):
 
 def create(request):
 	if request.method == 'GET':
-		return HttpResponse('BAD')
+		return HttpResponse(response(1, "Invalid Request"), content_type='application/json')
 	if request.method == 'POST':
 		name = request.POST.get('name')
 		material = request.POST.get('material')
@@ -110,7 +110,12 @@ def create(request):
 		new_sock = Sock.objects.create(name=name, material=material, color=color, description=description, style=style, theme=theme, price=price, seller=seller)
 		new_sock.save()
 
-	return HttpResponse(new_sock.pk)
+
+		dict = {}
+		dict['id'] = new_sock.pk
+		dict['result'] = 0
+		dict ['message'] = "Listing Created"
+		return HttpResponse(json.dumps(dict), content_type='application/json')
 
 def verify(request):
 	if request.method == 'GET':
@@ -118,5 +123,8 @@ def verify(request):
 		try:
 			u = Authenticator.objects.get(auth=auth)
 		except Authenticator.DoesNotExist:
-			return HttpResponse("BAD")
-	return HttpResponse('OK')
+			HttpResponse(response(1, "Invalid"), content_type='application/json')
+	return HttpResponse(response(0, "Valid"), content_type='application/json')
+
+
+

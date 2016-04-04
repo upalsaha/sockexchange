@@ -73,16 +73,17 @@ def create(request):
 	response = "invalid"
 	if request.method == 'GET':
 		#message error
-		return render('/home/')
+		return HttpResponse(response(1, "Invalid Request"), content_type='application/json')
 	if request.method == 'POST':
 		auth = request.POST.get('auth')
 		if not auth:
-			return HttpResponse('BAD')
+			return HttpResponse(response(1, "Invalid Request"), content_type='application/json')
 		else:
 			url = 'http://' + settings.MODELS_API + ':8000/verify' + '?auth=' + auth
 			req = urllib.request.Request(url)
 			response = urllib.request.urlopen(req).read().decode('utf-8')
-			if response == 'OK':
+			result_dict = json.loads(response)
+			if result_dict['result'] == 0:
 				url2 = 'http://' + settings.MODELS_API + ':8000/create/'
 				name = request.POST.get('name')
 				material = request.POST.get('material')
@@ -97,13 +98,15 @@ def create(request):
 				bin_data = enc_data.encode('ascii')
 				req2 = urllib.request.Request(url2)
 				result = urllib.request.urlopen(req2, bin_data).read().decode('utf-8')
-
+				result_dict = json.loads(result)
 				# TODO: Add validation for listing
 				producer = KafkaProducer(bootstrap_servers='kafka:9092')
-				post_data['id'] = result
+				post_data['id'] = result_dict['id']
 				producer.send('new-listings-topic', json.dumps(post_data).encode('utf-8'))
 
 				return HttpResponse(result)
+			return HttpResponse(response(1, "Invalid Auth"), content_type='application/json')
+
 
 def search(request):
 	query = request.GET.get('query')
