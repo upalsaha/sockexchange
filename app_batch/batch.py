@@ -3,7 +3,7 @@ from elasticsearch import Elasticsearch
 import time
 import json
 
-time.sleep(5)
+time.sleep(30)
 print("Script running")
 consumer = KafkaConsumer('new-listings-topic', group_id='listing-indexer', bootstrap_servers=['kafka:9092'])
 es = Elasticsearch(['es'])
