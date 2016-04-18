@@ -12,6 +12,16 @@ es:
    ports:
       - "9200:9200"
 
+pen:
+   image: galexrt/pen
+   links:
+      - web:web
+      - web2:web2
+   container_name: pen
+   ports:
+      - "8005:8000"
+   command: "/usr/local/bin/pen -f -r 8000 172.17.0.8:8000 172.17.0.7:8000"
+
 models:
    build: .
    external_links:
@@ -40,6 +50,16 @@ web:
       - exp:exp-api
    ports:
       - "8000:8000"
+   volumes:
+      - ./app_web:/app
+   command: "mod_wsgi-express start-server --reload-on-changes app_web/wsgi.py"
+
+web2:
+   build: .
+   links:
+      - exp:exp-api
+   ports:
+      - "8004:8000"
    volumes:
       - ./app_web:/app
    command: "mod_wsgi-express start-server --reload-on-changes app_web/wsgi.py"
